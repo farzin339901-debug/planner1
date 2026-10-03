@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#14213d">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>برنامه‌ریز روزانه و هفتگی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eef2f6;--card:#fff;--ink:#14213d;--mute:#64748b;--line:#dbe3ec;--ac:#0f8b8d;--hot:#e9a23b;--hotbg:#14213d;--hotink:#fff;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1522;--card:#17202f;--ink:#e8edf5;--mute:#8fa0b5;--line:#26334a;--ac:#2cb5b7;--hotbg:#0f8b8d;--hotink:#fff}}
+:root[data-theme="dark"]{--bg:#0e1522;--card:#17202f;--ink:#e8edf5;--mute:#8fa0b5;--line:#26334a;--ac:#2cb5b7;--hotbg:#0f8b8d;--hotink:#fff}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,sans-serif;line-height:1.7}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:22px;font-weight:800;margin:4px 0 14px}
+h2{font-size:15px;font-weight:600;margin:0 0 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+.next{background:var(--hotbg);color:var(--hotink);border:0;border-radius:20px;padding:18px}
+.next small{opacity:.75}
+.next .t{font-size:22px;font-weight:800;margin:2px 0 10px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 12px}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--hot);outline-offset:2px}
+.next button{background:var(--hot);color:#14213d;border:0;font-weight:600}
+.next button.ghost{background:transparent;color:var(--hotink);border:1px solid rgba(255,255,255,.4)}
+.timer{font-variant-numeric:tabular-nums;font-size:26px;font-weight:800}
+.days{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px}
+.day{flex:1 0 auto;text-align:center;min-width:64px;padding:6px 8px}
+.day.sel{background:var(--ac);color:#fff;border-color:var(--ac)}
+.day small{display:block;font-size:11px;opacity:.8}
+.bar{height:10px;background:var(--line);border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ac)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:8px;text-align:center}
+.stats b{display:block;font-size:18px}.stats span{font-size:12px;color:var(--mute)}
+.stats .over b{color:#d64545}
+.task{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.task:last-child{border:0}
+.task input[type=checkbox]{width:22px;height:22px;accent-color:var(--ac);flex:none}
+.task .m{flex:1;min-width:0}.task .n{font-weight:600;overflow-wrap:anywhere}
+.task.done .n{text-decoration:line-through;color:var(--mute)}.task small{color:var(--mute)}
+.add{display:grid;gap:8px}
+input,select{font:inherit;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.add>button{background:var(--ac);color:#fff;border:0;font-weight:600;padding:10px}
+.seg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px}
+.seg .sel{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.strip{position:relative;height:26px;background:var(--line);border-radius:8px;direction:ltr;overflow:hidden}
+.strip i{position:absolute;top:0;bottom:0;background:var(--ac);opacity:.55;border-inline:1px solid var(--card)}
+.strip i.d{opacity:1}
+.lab{display:flex;justify-content:space-between;direction:ltr;font-size:11px;color:var(--mute);margin:2px 0 6px}
+.wr{display:block;width:100%;text-align:right;padding:10px;margin-bottom:8px;border-radius:12px}
+.wr .row{justify-content:space-between}
+.sm{padding:3px 8px;font-size:13px}.x{color:var(--mute);border:0;background:none;padding:4px 8px}
+.al{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin:8px 0}.al label{font-size:11px;text-align:center;color:var(--mute)}.al input{padding:4px;text-align:center}.sub{font-size:13px;color:var(--mute)}.stp{display:flex;flex-direction:column;align-items:center;gap:3px}.stp button{width:100%;padding:6px 0;font-size:16px}.stp b{font-size:14px}.stp small{color:var(--mute);font-size:11px}.stp.ov b{color:#d64545}.empty{color:var(--mute);padding:8px 0}
+.err{background:#fde8e8;color:#9b1c1c;border-radius:10px;padding:8px 12px;margin-bottom:10px}:root[data-theme="dark"] .err{background:#4a1d1d;color:#fecaca}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .err{background:#4a1d1d;color:#fecaca}}.tm{width:96px;direction:ltr;text-align:center;padding:4px}.mn{width:70px;padding:4px;text-align:center}.fx{color:var(--mute);font-size:13px;padding:6px 0;border-bottom:1px dashed var(--line)}.sm{padding:3px 8px;font-size:13px}.empty{color:var(--mute);padding:8px 0}
+</style>
+</head>
+<body>
+<main>
+<h1>برنامه‌ریز من</h1>
+<div class="seg"><button id="vd" onclick="V='day';R()">روز</button><button id="vw" onclick="V='week';RC=false;R()">هفته</button><button id="vg" onclick="V='goals';R()">اهداف</button></div>
+<div id="app"></div>
+<details class="card"><summary>تنظیم زمان قابل‌استفاده هر روز (ساعت)</summary><div class="add" id="set" style="margin-top:10px"></div></details>
+</main>
+<script>
+const D=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
+const today=(new Date().getDay()+1)%7;
+let S={cap:[600,480,600,480,600,480,960],goals:[],al:{},b:[]},V='day',sel=today,msg='',em='',AO=false,RC=false,O=0,DC=0,F={n:'',du:''};
+try{const r=localStorage.getItem('planner-v4');if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+S.gk=S.gk||{};S.b=S.b.filter(x=>!x.g);
+const save=()=>{try{localStorage.setItem('planner-v4',JSON.stringify(S))}catch(e){}};
+const $=i=>document.getElementById(i);
+const fa=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const H=m=>fa(Math.round(m/6)/10)+' ساعت';
+const T=m=>fa(String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0'));
+const pm=v=>{const[a,b]=v.split(':');return +a*60+ +b};
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dur=x=>x.m!=null?x.m:x.e-x.s,sum=l=>l.reduce((t,x)=>t+dur(x),0);
+const sc=(g,d)=>sum(S.b.filter(x=>x.g===g&&x.d===d));
+const A=(g,d)=>(S.al[g]||[])[d]||0;
+const items=d=>[...S.goals.filter(g=>A(g.id,d)>0).map(g=>({id:'g'+g.id+'-'+d,n:g.n,m:A(g.id,d),k:!!S.gk['g'+g.id+'-'+d],g:g.id})),...S.b.filter(x=>x.d===d&&!x.g)];
+const gn=id=>(S.goals.find(g=>g.id===id)||{n:''}).n;
+function dm(i){const l=items(i),cap=S.cap[i],plan=sum(l),done=sum(l.filter(x=>x.k));
+  return{cap,plan,done,rem:plan-done,free:Math.max(0,cap-plan),over:Math.max(0,plan-cap),pct:plan?Math.round(done/plan*100):0}}
+function commit(i){return dm(i).plan}
+function gm(g){const al=S.al[g.id]||[],alloc=al.reduce((a,b)=>a+(b||0),0),done=[0,1,2,3,4,5,6].reduce((t,d)=>t+(S.gk['g'+g.id+'-'+d]?A(g.id,d):0),0);
+  return{t:g.h,alloc,un:Math.max(0,g.h-alloc),ov:Math.max(0,alloc-g.h),sch:sum(S.b.filter(x=>x.g===g.id)),done,rem:Math.max(0,g.h-done),pct:g.h?Math.round(done/g.h*100):0}}
+function wk(){const t={cap:0,plan:0,done:0,rem:0};for(let i=0;i<7;i++){const m=dm(i);for(const k in t)t[k]+=m[k]}
+  t.free=Math.max(0,t.cap-t.plan);t.over=Math.max(0,t.plan-t.cap);t.pct=t.plan?Math.round(t.done/t.plan*100):0;return t}
+function dayW(i){const m=dm(i),c=commit(i),w=[];
+  if(m.over)w.push(`${D[i]}: ${H(m.over)} بیشتر از ظرفیت برنامه‌ریزی شده.`);
+  else if(m.cap>0&&m.plan===m.cap)w.push(`${D[i]}: تمام ظرفیت روز پر شده است.`);return w}
+function goalW(g){const m=gm(g),w=[];
+  if(m.un)w.push(`هدف هفتگی ${esc(g.n)} ${H(m.t)} است، اما فقط ${H(m.alloc)} بین روزها تخصیص داده شده.`);
+  if(m.ov)w.push(`تخصیص‌های ${esc(g.n)} ${H(m.ov)} بیشتر از هدف است.`);
+  if(m.rem)w.push(`${H(m.rem)} از هدف هفتگی ${esc(g.n)} باقی مانده.`);return w}
+const W=l=>l.map(x=>`<div class="err" style="margin-top:8px">⚠️ ${x}</div>`).join('');
+const bar=p=>`<div class="bar"><i style="width:${Math.min(100,p)}%"></i></div>`;
+const prog=(m,t)=>`<div class="row" style="justify-content:space-between;margin:12px 0 4px"><small>${t||'پیشرفت'}</small><b>${fa(m.pct)}٪</b></div>${bar(m.pct)}`;
+const cells=m=>`<div><b>${H(m.cap)}</b><span>قابل‌استفاده</span></div><div><b>${H(m.plan)}</b><span>برنامه‌ریزی‌شده</span></div><div><b>${H(m.done)}</b><span>انجام‌شده</span></div><div><b>${H(m.rem)}</b><span>کار باقی‌مانده</span></div><div><b>${H(m.free)}</b><span>زمان آزاد</span></div>`;
+function tog(id){if(String(id)[0]==='g')S.gk[id]=!S.gk[id];else{const b=S.b.find(x=>x.id==id);b.k=!b.k}save();R()}
+function del(id){S.b=S.b.filter(x=>x.id!==id);save();R()}
+function sa(g,i,v){(S.al[g]=S.al[g]||[0,0,0,0,0,0,0])[i]=Math.round(Math.max(0,+v||0)*60);save();R()}
+function sh(g,v){S.goals.find(x=>x.id===g).h=Math.round(Math.max(0,+v||0)*60);save();R()}
+function gdel(g){S.goals=S.goals.filter(x=>x.id!==g);delete S.al[g];S.b.forEach(x=>{if(x.g===g){x.g=0;x.n=x.n||''}});save();R()}
+function gadd(){const n=$('gn').value.trim(),h=+$('gh').value;if(!n){$('gn').focus();return}if(!h){$('gh').focus();return}
+  const id=Date.now();S.goals.push({id,n,h:Math.round(h*60)});S.al[id]=[0,0,0,0,0,0,0];O=id;save();R()}
+function nw(){if(!RC){RC=true;R();return}S.gk={};S.b=[];RC=false;sel=today;V='day';save();R()}
+function askdel(id){if(DC===id){DC=0;gdel(id)}else{DC=id;R()}}
+function step(g,i,d){const a=S.al[g]=S.al[g]||[0,0,0,0,0,0,0];a[i]=Math.max(0,(a[i]||0)+d);save();R()}
+function add(){F={n:$('n').value.trim(),du:$('du').value};const m=Math.round((+F.du||0)*60);
+  if(!F.n||m<5){msg='نام کار و مدت آن را وارد کن.';R();return}
+  S.b.push({id:Date.now(),d:sel,n:F.n,g:0,m,k:false});F={n:'',du:''};msg='';AO=false;save();R()}
+function ed(id,v){const b=S.b.find(x=>x.id===id),h=+v;if(h>0){b.m=Math.round(h*60);save()}R()}
+function item(x){const g=!!x.g;return `<div class="task ${x.k?'done':''}"><input type="checkbox" ${x.k?'checked':''} onchange="tog('${x.id}')" aria-label="انجام شد"><div class="m"><div class="n">${esc(x.n)}</div><small>${H(dur(x))}${g?' · از هدف هفتگی':''}</small>${g?'':`<div class="row" style="margin-top:4px"><input class="mn" type="number" min="0.25" step="0.25" value="${dur(x)/60}" onchange="ed(${x.id},this.value)" aria-label="مدت (ساعت)"><small>ساعت</small></div>`}</div>${g?'':`<button class="x" onclick="del(${x.id})" aria-label="حذف">✕</button>`}</div>`}
+function R(){
+  for(const[k,v]of[['vd','day'],['vw','week'],['vg','goals']])$(k).className=V===v?'sel':'';
+  let h='';
+  if(V==='goals'){
+    h=`<section class="card"><h2>هدف جدید</h2><div class="row"><input id="gn" placeholder="نام درس یا هدف" style="flex:2;min-width:120px" aria-label="نام هدف" onkeydown="if(event.key==='Enter')$('gh').focus()"><input id="gh" type="number" min="0" step="0.5" placeholder="ساعت در هفته" style="flex:1;min-width:90px" aria-label="ساعت هفتگی" onkeydown="if(event.key==='Enter')gadd()"><button onclick="gadd()" style="background:var(--ac);color:#fff;border:0;font-weight:600">افزودن</button></div></section>`+
+    (S.goals.map(g=>{const m=gm(g),op=O===g.id;return `<section class="card"><div class="row" style="justify-content:space-between;cursor:pointer" onclick="DC=0;O=${op?0:g.id};R()"><b>${esc(g.n)}</b><small>${H(m.alloc)} از ${H(m.t)} تخصیص · ${fa(m.pct)}٪ انجام</small><button class="sm" style="${DC===g.id?'background:#d64545;color:#fff;border:0':''}" onclick="event.stopPropagation();askdel(${g.id})" aria-label="حذف هدف">${DC===g.id?'مطمئنی؟ حذف':'✕ حذف'}</button></div><div style="margin-top:6px">${bar(m.t?m.alloc/m.t*100:0)}</div>
+    ${op?`<div class="al" style="margin-top:12px">${D.map((d,i)=>`<div class="stp ${commit(i)>S.cap[i]?'ov':''}"><button onclick="step(${g.id},${i},30)" aria-label="۳۰ دقیقه بیشتر">+</button><b>${fa(A(g.id,i)/60)}</b><button onclick="step(${g.id},${i},-30)" aria-label="۳۰ دقیقه کمتر">−</button><small>${d.slice(0,2)}</small></div>`).join('')}</div>
+    <div class="sub" style="text-align:center">هر بار ۳۰ دقیقه · باقی‌مانده برای تخصیص: <b>${H(m.un)}</b></div><div class="stats" style="margin-top:10px"><div><b>${H(m.t)}</b><span>هدف</span></div><div><b>${H(m.alloc)}</b><span>تخصیص‌یافته</span></div><div><b>${H(m.un)}</b><span>باقی‌مانده برای تخصیص</span></div><div><b>${H(m.done)}</b><span>انجام‌شده</span></div><div><b>${H(m.rem)}</b><span>باقی‌مانده از هدف</span></div></div>
+    ${prog(m,H(m.done)+' از '+H(m.t)+' انجام شده')}${W(goalW(g))}
+    <div class="row" style="margin-top:12px;justify-content:space-between"><label class="row">هدف هفتگی (ساعت)<input type="number" min="0" step="0.5" value="${g.h/60}" style="width:80px" onchange="sh(${g.id},this.value)"></label></div>`:''}</section>`}).join('')||'<div class="empty">هدفی نداری. بالا نام و ساعت هفتگی‌اش را بنویس.</div>');
+  }else if(V==='week'){
+    const t=wk(),w=[];for(let i=0;i<7;i++)w.push(...dayW(i));S.goals.forEach(g=>w.push(...goalW(g)));
+    h=`<section class="card"><h2>کل هفته</h2><div class="stats">${cells(t)}</div>${t.over?W([H(t.over)+' بیشتر از ظرفیت هفته']):''}${prog(t,H(t.done)+' از '+H(t.plan)+' برنامه‌ریزی‌شده')}</section>`+
+    D.map((d,i)=>{const m=dm(i);return `<button class="wr card" onclick="sel=${i};V='day';R()"><div class="row"><b>${d}${i===today?' (امروز)':''}</b><small>${fa(m.pct)}٪</small></div><small>ظرفیت ${H(m.cap)} · برنامه ${H(m.plan)} · انجام ${H(m.done)} · باقی‌مانده ${H(m.rem)} · آزاد ${H(m.free)}</small><div class="bar" style="margin-top:6px"><i style="width:${m.pct}%"></i></div></button>`}).join('')+
+    (S.goals.length?`<section class="card"><h2>اهداف هفتگی</h2>${S.goals.map(g=>{const m=gm(g);return `<div style="margin-bottom:10px"><div class="row" style="justify-content:space-between"><b>${esc(g.n)}</b><small>${H(m.done)} از ${H(m.t)} · ${fa(m.pct)}٪</small></div>${bar(m.pct)}</div>`}).join('')}</section>`:'')+
+    (w.length?`<section class="card"><h2>هشدارها</h2>${W(w)}</section>`:'')+
+    `<section class="card"><h2>هفته‌ی جدید</h2><div class="sub">تیک‌ها و کارهای مخصوص روزها پاک می‌شوند. اهداف، تخصیص ساعت‌ها و ظرفیت روزها می‌مانند.</div><div class="row" style="margin-top:10px"><button onclick="nw()" style="${RC?'background:#d64545;color:#fff;border:0':''}">${RC?'مطمئنی؟ شروع هفته‌ی جدید':'شروع هفته‌ی جدید'}</button>${RC?`<button onclick="RC=false;R()">لغو</button>`:''}</div></section>`;
+  }else{
+    const l=items(sel),m=dm(sel),nd=l.filter(x=>!x.k),dn=l.filter(x=>x.k);
+    
+    h=`<div class="days">${D.map((d,i)=>`<button class="day ${i===sel?'sel':''}" onclick="sel=${i};msg='';em='';R()">${d}<small>${i===today?'امروز':H(dm(i).free)+' آزاد'}</small></button>`).join('')}</div>
+    <section class="card"><h2>${D[sel]}</h2><div class="stats">${cells(m)}</div>${W(dayW(sel))}${prog(m)}</section>
+    <section class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">کارهای ${D[sel]}</h2><button class="sm" onclick="AO=!AO;msg='';R()">${AO?'بستن':'+ افزودن کار'}</button></div>
+    ${AO?`<div class="add" style="margin-top:10px"><div class="sub">فقط برای ${D[sel]} ثبت می‌شود و در آمار روز و هفته حساب می‌شود.</div><input id="n" placeholder="نام کار" value="${esc(F.n)}" aria-label="نام کار"><label>مدت (ساعت)<input id="du" type="number" min="0.25" step="0.25" value="${F.du}" placeholder="مثلاً ۱.۵"></label>${msg?`<div class="err">${msg}</div>`:''}<button onclick="add()">ثبت کار</button></div>`:''}
+    ${em?`<div class="err">${em}</div>`:''}<h2 style="margin-top:10px">انجام‌نشده (${fa(nd.length)})</h2>${nd.map(item).join('')||'<div class="empty">کاری باقی نمانده.</div>'}
+    <h2 style="margin-top:10px">انجام‌شده (${fa(dn.length)})</h2>${dn.map(item).join('')||'<div class="empty">هنوز کاری تیک نخورده.</div>'}</section>
+    `;
+  }
+  $('app').innerHTML=h;
+  $('set').innerHTML=D.map((d,i)=>`<label class="row" style="justify-content:space-between">${d}<input type="number" min="0" max="24" step="0.5" value="${S.cap[i]/60}" style="width:90px" onchange="S.cap[${i}]=Math.min(24,Math.max(0,+this.value||0))*60;save();R()"></label>`).join('');
+}
+R();
+</script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})})}</script>
+</body>
+</html>
